@@ -325,6 +325,61 @@ def run_random_forest(X_train, y_train, X_test, y_test, dt_results, feature_name
     plt.savefig('plots/figura9_feature_importance_rf.png', bbox_inches='tight')
     plt.close()
 
+def train_rf_various_depths(X_train, y_train, X_test, y_test):
+    depths = [2, 4, 6, 8, 12, 20, None]
+    results = []
+    
+    print("Treinando Random Forests em várias profundidades...")
+    for d in depths:
+        rf = RandomForestClassifier(n_estimators=100, max_depth=d, random_state=42, n_jobs=-1)
+        rf.fit(X_train, y_train)
+        
+        y_pred_train = rf.predict(X_train)
+        y_pred_test = rf.predict(X_test)
+        
+        acc_train = accuracy_score(y_train, y_pred_train)
+        acc_test = accuracy_score(y_test, y_pred_test)
+        gen_gap = acc_train - acc_test
+        
+        results.append({
+            'max_depth_param': str(d) if d is not None else 'Máx',
+            'acc_train': acc_train,
+            'acc_test': acc_test,
+            'gen_gap': gen_gap
+        })
+        
+    return pd.DataFrame(results)
+
+def plot_rf_performance_and_gap(df_rf_results):
+    print("Gerando gráficos de desempenho para Random Forest (1b e 2b)...")
+    
+    x_labels = df_rf_results['max_depth_param'].tolist()
+    x_ticks = range(len(x_labels))
+    
+    # Figura 1b: Desempenho RF
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_ticks, df_rf_results['acc_train'], marker='o', label='Acurácia Treino (RF)', color='forestgreen', linewidth=2)
+    plt.plot(x_ticks, df_rf_results['acc_test'], marker='s', label='Acurácia Teste (RF)', color='limegreen', linewidth=2)
+    plt.xticks(x_ticks, x_labels)
+    plt.xlabel('Max Depth')
+    plt.ylabel('Acurácia')
+    plt.title('Figura 1b: Desempenho (Treino vs Teste) por Profundidade - Random Forest')
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.savefig('plots/figura1b_desempenho_rf.png', bbox_inches='tight')
+    plt.close()
+    
+    # Figura 2b: Gap de Generalização RF
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_ticks, df_rf_results['gen_gap'], marker='o', color='purple', linewidth=2)
+    plt.xticks(x_ticks, x_labels)
+    plt.xlabel('Max Depth')
+    plt.ylabel('Gap de Generalização (Acc Treino - Acc Teste)')
+    plt.title('Figura 2b: Gap de Generalização por Profundidade - Random Forest')
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.savefig('plots/figura2b_gap_generalizacao_rf.png', bbox_inches='tight')
+    plt.close()
+
 def main():
     create_dirs()
     X_train_df, X_test_df, y_train, y_test, feature_names = load_and_preprocess_data()
@@ -337,6 +392,10 @@ def main():
     render_trees(models, feature_names)
     
     run_random_forest(X_train_df, y_train, X_test_df, y_test, dt_results, feature_names, models)
+    
+    rf_results = train_rf_various_depths(X_train_df, y_train, X_test_df, y_test)
+    plot_rf_performance_and_gap(rf_results)
+    
     print("Experimento concluído com sucesso!")
 
 if __name__ == '__main__':
