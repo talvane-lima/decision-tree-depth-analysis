@@ -167,17 +167,24 @@ def plot_feature_importances(models, feature_names):
     print("Gerando gráficos de top features por profundidade...")
     depths = list(models.keys())
     
-    fig, axes = plt.subplots(len(depths), 1, figsize=(10, 4 * len(depths)))
+    n_cols = 2
+    n_rows = int(np.ceil(len(depths) / n_cols))
+    
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(16, 4 * n_rows))
+    axes = axes.flatten()
     
     for i, d in enumerate(depths):
         model = models[d]
         importances = model.feature_importances_
-        indices = np.argsort(importances)[::-1][:5]
+        indices = np.argsort(importances)[::-1][:10]
         
         features_list = [feature_names[j] for j in indices]
         sns.barplot(x=importances[indices], y=features_list, ax=axes[i], hue=features_list, palette='viridis', legend=False)
-        axes[i].set_title(f'Top 5 Features - Max Depth: {d if d is not None else "None"}')
+        axes[i].set_title(f'Top 10 Features - Max Depth: {d if d is not None else "None"}')
         axes[i].set_xlabel('Importância')
+        
+    for j in range(i + 1, len(axes)):
+        fig.delaxes(axes[j])
     
     plt.tight_layout()
     plt.savefig('plots/figura4_top_features.png', bbox_inches='tight')
