@@ -128,7 +128,7 @@ def plot_performance_and_gap(df_results):
     plt.xticks(x_ticks, x_labels)
     plt.xlabel('Max Depth')
     plt.ylabel('Acurácia')
-    plt.title('Figura 1: Desempenho (Treino vs Teste) por Profundidade')
+    plt.title('Desempenho (Treino vs Teste) por Profundidade')
     plt.legend()
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.savefig('plots/figura1_desempenho.png', bbox_inches='tight')
@@ -140,7 +140,7 @@ def plot_performance_and_gap(df_results):
     plt.xticks(x_ticks, x_labels)
     plt.xlabel('Max Depth')
     plt.ylabel('Gap de Generalização (Acc Treino - Acc Teste)')
-    plt.title('Figura 2: Gap de Generalização por Profundidade')
+    plt.title('Gap de Generalização por Profundidade')
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.savefig('plots/figura2_gap_generalizacao.png', bbox_inches='tight')
     plt.close()
@@ -158,7 +158,7 @@ def plot_performance_and_gap(df_results):
     ax1.set_xticks(x_ticks)
     ax1.set_xticklabels(x_labels)
     
-    plt.title('Figura 3: Complexidade Estrutural (Nós e Folhas) por Profundidade')
+    plt.title('Complexidade Estrutural (Nós e Folhas) por Profundidade')
     fig.tight_layout()
     plt.savefig('plots/figura3_complexidade.png', bbox_inches='tight')
     plt.close()
@@ -242,7 +242,7 @@ def render_trees(models, feature_names):
         plt.figure(figsize=(20, 10))
         plot_tree(models[d], feature_names=feature_names, filled=True, rounded=True, 
                   class_names=['<=50K', '>50K'], proportion=True, max_depth=d, fontsize=8)
-        plt.title(f'Figura 7: Decision Tree (Max Depth = {d})')
+        plt.title(f'Decision Tree (Max Depth = {d})')
         plt.savefig(f'plots/figura7_tree_depth_{d}.png', bbox_inches='tight')
         plt.close()
 
@@ -315,7 +315,7 @@ def run_random_forest(X_train, y_train, X_test, y_test, dt_results, feature_name
     
     plt.figure(figsize=(12, 6))
     sns.barplot(data=df_imp_top, x='Importance', y='Feature', hue='Model', palette='pastel')
-    plt.title('Figura 9: Comparação de Feature Importances (Top 10 da RF)')
+    plt.title('Comparação de Feature Importances (Top 10 da RF)')
     plt.savefig('plots/figura9_feature_importance_rf.png', bbox_inches='tight')
     plt.close()
 
