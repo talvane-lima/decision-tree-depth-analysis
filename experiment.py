@@ -96,7 +96,7 @@ def train_decision_trees(X_train, y_train, X_test, y_test):
         actual_depth = dt.tree_.max_depth
         
         results.append({
-            'max_depth_param': str(d) if d is not None else 'None',
+            'max_depth_param': str(d) if d is not None else 'Máx',
             'actual_depth': actual_depth,
             'acc_train': acc_train,
             'acc_test': acc_test,
@@ -180,7 +180,7 @@ def plot_feature_importances(models, feature_names):
         
         features_list = [feature_names[j] for j in indices]
         sns.barplot(x=importances[indices], y=features_list, ax=axes[i], hue=features_list, palette='viridis', legend=False)
-        axes[i].set_title(f'Top 10 Features - Max Depth: {d if d is not None else "None"}')
+        axes[i].set_title(f'Top 10 Features - Max Depth: {d if d is not None else "Máx"}')
         axes[i].set_xlabel('Importância')
         
     for j in range(i + 1, len(axes)):
