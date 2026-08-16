@@ -43,8 +43,7 @@ def load_and_preprocess_data():
     
     # Preprocessing
     num_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='median')),
-        ('scaler', StandardScaler())
+        ('imputer', SimpleImputer(strategy='median'))
     ])
     
     cat_transformer = Pipeline(steps=[
@@ -233,7 +232,7 @@ def plot_variable_fragmentation(models, X_train_df, feature_names):
         ax.set_title(f'Cortes em "{main_var}" (Profundidade {d if d is not None else "Máxima"}: {len(var_thresholds)} cortes)')
         ax.set_ylabel('Frequência')
         if i == len(depths) - 1:
-            ax.set_xlabel(f'{main_var} (Standardized)')
+            ax.set_xlabel(f'{main_var}')
         else:
             ax.set_xlabel('')
             
